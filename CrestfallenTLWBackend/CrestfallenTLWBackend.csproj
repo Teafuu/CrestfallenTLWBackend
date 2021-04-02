@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Controller\Gameplay\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CrestfallenCore\CrestfallenCore.csproj" />
+  </ItemGroup>
+
+</Project>
