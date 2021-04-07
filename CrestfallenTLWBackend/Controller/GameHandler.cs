@@ -14,22 +14,22 @@ namespace CrestfallenTLWBackend.Controller
     public class GameHandler
     {
         public CommandHandler CommandHandler { get; set; }
-        public int GameIndex { get; private set; }
         public List<Player> Players { get; private set;}
+        public int GameIndex { get; private set; }
         public Chatroom LobbyChat { get; set; }
+
         private Thread _gameThread;
-        // when people are assgined to a game
         public GameHandler(Player player1, Player player2, int gameIndex)
         {
             Logger.Log($"Game:{GameIndex}: Players {player1.Nickname}, {player2.Nickname}: have joined a lobby together.");
 
-            CommandHandler = new CommandHandler();
+            CommandHandler = new CommandHandler(); 
             Players = new List<Player> { player1, player2 };
             LobbyChat = new Chatroom { ID = player1.ServerHandler.Chatrooms.Count, Users = Players };
             GameIndex = gameIndex;
 
             foreach (var player in Players) { 
-                player.ChatRooms.Add(LobbyChat);
+                player.Chatrooms.Add(LobbyChat);
                 player.GameHandler = this;
                 player.IsReady = false;
             }

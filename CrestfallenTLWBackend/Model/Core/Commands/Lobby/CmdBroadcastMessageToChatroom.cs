@@ -20,7 +20,7 @@ namespace CrestfallenTLWBackend.Model.Core.Commands
         }
         public override void Execute()
         {
-            Chatroom chatroom = _player.ChatRooms
+            Chatroom chatroom = _player.Chatrooms
                 .Where(x => x.ID.ToString().Equals(_chatroomId))
                 .FirstOrDefault();
 

@@ -12,11 +12,11 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         {
             ServerHandler = server;
             ID = playerID;
-            ChatRooms = new List<Chatroom>();
+            Chatrooms = new List<Chatroom>();
         }
         public GameHandler GameHandler { get; set; }
         public ServerHandler ServerHandler { get; private set; }
-        public List<Chatroom> ChatRooms { get; set; }
+        public List<Chatroom> Chatrooms { get; set; }
         public string Nickname { get; set; }
         public bool IsReady { get; set; }
         public int ID { get; private set; }

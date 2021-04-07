@@ -12,14 +12,16 @@ namespace CrestfallenTLWBackend.Controller
 {
     public class CommandHandler
     {
-        private ServerHandler _serverHandler;
         private bool _isActive;
         private Queue<Command> CommandQueue { get; set; }
+        public Thread CommandThread { get; set; }
         public CommandHandler()
         {
             CommandQueue = new Queue<Command>();
-            new Thread(() => ExecuteCommands()) { IsBackground = true }.Start();
+            CommandThread = new Thread(() => ExecuteCommands()) { IsBackground = true };
+            CommandThread.Start();
         }
+
         private void ExecuteCommands()
         {
             _isActive = true;
