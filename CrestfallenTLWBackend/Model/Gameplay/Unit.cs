@@ -1,5 +1,6 @@
 ﻿using CrestfallenTLWBackend.Model.Gameplay;
 using CrestfallenTLWBackend.Model.Interfaces;
+using CrestfallenTLWBackend.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,63 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         public float XPosition { get; set; }
         public float YPosition { get; set; }
         public List<Tile> Waypoints { get; set; }
+        public Vector2 Position;
+        public Vector2 MovementVector;
+        public float MovementSpeed { get; set; }
+
+        private int _currentWaypointDestination;
 
         public Unit(Grid grid)
         {
             Grid = grid;
             Waypoints = new List<Tile>();
+            _currentWaypointDestination = 0;
         }
 
         public void Move()
         {
-            throw new NotImplementedException();
+            if(Vector2.Distance(Position, Waypoints[_currentWaypointDestination].Position) <= 0)
+            {
+                if (Waypoints.Count - 1 == _currentWaypointDestination)
+                    Logger.Log($"{this} finished navigating");
+                else
+                {
+                    Position = Waypoints[_currentWaypointDestination].Position;
+                    _currentWaypointDestination++;
+                    GetMovementDirection();
+                }
+            }
+            Position += MovementVector;
+        }
+
+        private void GetMovementDirection()
+        {
+            if ((Position.X - Waypoints[_currentWaypointDestination].Position.X) == 0)
+            {
+                if ((Position.Y - Waypoints[_currentWaypointDestination].Position.Y) > 0)
+                {
+                    MovementVector.Y = -MovementSpeed;
+                    MovementVector.X = 0;
+                }
+                else
+                {
+                    MovementVector.Y = MovementSpeed;
+                    MovementVector.X = 0;
+                }
+            }
+            else
+            {
+                if ((Position.X - Waypoints[_currentWaypointDestination].Position.X) > 0)
+                {
+                    MovementVector.Y = 0;
+                    MovementVector.X = -MovementSpeed;
+                }
+                else
+                {
+                    MovementVector.Y = 0;
+                    MovementVector.X = MovementSpeed;
+                }
+            }
         }
 
         public void CalculatePath(Tile start) => ReconstructPath(start, Solve(start));
@@ -64,7 +112,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                 Waypoints.Add(tile);
 
             Waypoints.Reverse();
-
+            Position = Waypoints[0].Position;
             if (Waypoints.Count > 0)
                 return Waypoints[0] == start;
             else return false;
@@ -77,6 +125,8 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                 {
                     if (Grid.Tiles[x, y] == Grid.Goal)
                         Console.Write("# ");
+                    else if (Grid.Tiles[x, y].Position == Position)
+                        Console.WriteLine("P ");
                     else if (Waypoints.Contains(Grid.Tiles[x, y]))
                         Console.Write(". ");
                     else if (Grid.Tiles[x, y].IsBlocked)

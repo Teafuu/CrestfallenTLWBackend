@@ -1,5 +1,6 @@
 ﻿using CrestfallenTLWBackend.Model.Interfaces;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace CrestfallenTLWBackend.Model.Gameplay
 {
@@ -10,8 +11,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         public ITower Tower { get; set; }
         public bool IsBlocked { get; set; }
 
-        public int X { get; set; }
-        public int Y { get; set; }
+        public Vector2 Position;
         public int Index { get; set; }
 
         public Tile(int x, int y, int index)
@@ -19,8 +19,8 @@ namespace CrestfallenTLWBackend.Model.Gameplay
             TileBlock = new List<Tile>();
             Neighbours = new List<Tile>();
             TileBlock.Add(this);
-            X = x;
-            Y = y;
+            Position.X = x;
+            Position.Y = y;
             Index = index;
         }
     }

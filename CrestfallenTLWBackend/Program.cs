@@ -12,7 +12,14 @@ namespace CrestfallenTLWBackend
         {
             Grid grid = new Grid();
             Unit unit = new Unit(grid);
+            unit.MovementSpeed = 1;
             unit.CalculatePath(grid.TilesAsList[0]);
+            while (true)
+            {
+                Console.Clear();
+                unit.Move();
+                unit.PrintPath();
+            }
             unit.PrintPath();
             Console.WriteLine("Path calculated");
         }
