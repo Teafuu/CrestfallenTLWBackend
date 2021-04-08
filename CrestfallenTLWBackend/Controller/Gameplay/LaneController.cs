@@ -9,7 +9,7 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
 {
     class LaneController
     {
-        public List<IUnit> Units { get; set; }
+        public List<Unit> Units { get; set; }
         public List<ITower> Towers { get; set; }
         public Grid Grid { get; set; }
 
@@ -17,12 +17,12 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
         public LaneController(Player player)
         {
             _player = player;
-            Units = new List<IUnit>();
+            Units = new List<Unit>();
             Towers = new List<ITower>();
             Grid = new Grid();
         }
 
-        public void SpawnUnit(IUnit unit)
+        public void SpawnUnit(Unit unit)
         {
             //some cool logic
             Units.Add(unit);

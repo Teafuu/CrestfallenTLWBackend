@@ -8,6 +8,7 @@ namespace CrestfallenTLWBackend.View
     public static class Logger
     {
         public static Queue<string> Logs { get; set; } = new Queue<string>();
+
         public static void Log(string log) {
             string logMsg = $"{DateTime.Now}: {log}";
             Console.WriteLine(logMsg);

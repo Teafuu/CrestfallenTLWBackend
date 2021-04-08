@@ -12,13 +12,16 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
         public int X { get; set; }
         public int Y { get; set; }
+        public int Index { get; set; }
 
-        public Tile(int x, int y)
+        public Tile(int x, int y, int index)
         {
             TileBlock = new List<Tile>();
+            Neighbours = new List<Tile>();
             TileBlock.Add(this);
             X = x;
             Y = y;
+            Index = index;
         }
     }
 }
