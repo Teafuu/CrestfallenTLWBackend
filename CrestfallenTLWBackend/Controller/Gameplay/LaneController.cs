@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CrestfallenTLWBackend.Controller.Gameplay
 {
-    class LaneController
+    public class LaneController
     {
         public List<Unit> Units { get; set; }
         public List<ITower> Towers { get; set; }

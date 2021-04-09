@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using CrestfallenTLWBackend.Controller;
 using CrestfallenTLWBackend.Model.Gameplay;
 using CrestfallenTLWBackend.View;
@@ -16,9 +17,10 @@ namespace CrestfallenTLWBackend
             unit.CalculatePath(grid.TilesAsList[0]);
             while (true)
             {
-                Console.Clear();
                 unit.Move();
                 unit.PrintPath();
+                Thread.Sleep(1000);
+                Console.Clear();
             }
             unit.PrintPath();
             Console.WriteLine("Path calculated");

@@ -12,5 +12,6 @@ namespace CrestfallenTLWBackend.Model.Interfaces
         Grid Grid { get; set; }
         List<Tile> Waypoints { get; set; }
         void CalculatePath(Tile start);
+        void Move();
     }
 }

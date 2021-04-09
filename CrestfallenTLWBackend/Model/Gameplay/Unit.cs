@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace CrestfallenTLWBackend.Model.Gameplay
 {
-    class Unit : INavigator
+    public class Unit : INavigator
     {
-        public Grid Grid { get; set; }
-        public float XPosition { get; set; }
-        public float YPosition { get; set; }
-        public List<Tile> Waypoints { get; set; }
         public Vector2 Position;
-        public Vector2 MovementVector;
+        private Vector2 MovementVector;
         public float MovementSpeed { get; set; }
+        public float CurrentHealth{ get; set; }
+        public float OriginalHealth{ get; set; }
 
+        public Grid Grid { get; set; }
+        public List<Tile> Waypoints { get; set; }
         private int _currentWaypointDestination;
 
         public Unit(Grid grid)
@@ -45,6 +45,8 @@ namespace CrestfallenTLWBackend.Model.Gameplay
             }
             Position += MovementVector;
         }
+
+        internal void TakeDamage(float damage) => CurrentHealth -= damage;
 
         private void GetMovementDirection()
         {
@@ -124,9 +126,9 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                 for (int y = 0; y < Grid.YLength; y++)
                 {
                     if (Grid.Tiles[x, y] == Grid.Goal)
-                        Console.Write("# ");
+                        Console.Write("# "); 
                     else if (Grid.Tiles[x, y].Position == Position)
-                        Console.WriteLine("P ");
+                        Console.Write("P ");
                     else if (Waypoints.Contains(Grid.Tiles[x, y]))
                         Console.Write(". ");
                     else if (Grid.Tiles[x, y].IsBlocked)
