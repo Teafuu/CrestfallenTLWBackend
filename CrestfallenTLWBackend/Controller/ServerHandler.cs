@@ -23,10 +23,12 @@ namespace CrestfallenTLWBackend.Controller
         public ServerHandler()
         {
             Players = new List<Player>();
+            Players.Add(new TempPlayer(this,5));
             MatchmakingQueue = new List<Player>();
+            MatchmakingQueue.Add(Players[0]);
             ActiveGames = new List<GameHandler>();
             CommandHandler = new CommandHandler();
-            _connectionManager = new ConnectionManager("127.0.0.1", 8000, this);
+            _connectionManager = new ConnectionManager("88.86.36.163", 8000, this);
 
             _matchmakingThread = new Thread(() => MatchMaker()) { IsBackground = true };
             _matchmakingThread.Start();

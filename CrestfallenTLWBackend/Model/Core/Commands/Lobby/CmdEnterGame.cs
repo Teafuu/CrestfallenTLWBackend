@@ -12,6 +12,5 @@ namespace CrestfallenTLWBackend.Model.Core.Commands
         public CmdEnterGame(Player player) => _player = player;
 
         public override void Execute() =>_player.Output(Construct());
-        
     }
 }

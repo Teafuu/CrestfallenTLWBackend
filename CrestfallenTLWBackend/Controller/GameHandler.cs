@@ -17,6 +17,7 @@ namespace CrestfallenTLWBackend.Controller
         public List<Player> Players { get; private set;}
         public int GameIndex { get; private set; }
         public Chatroom LobbyChat { get; set; }
+        public Grid Grid { get; set; }
 
         private Thread _gameThread;
         public GameHandler(Player player1, Player player2, int gameIndex)
@@ -51,11 +52,15 @@ namespace CrestfallenTLWBackend.Controller
                     shouldStart = true;
 
             StartGame();
+
         }
         private void StartGame()
         {
+            Grid = new Grid();
             foreach (var player in Players)
+            {
                 CommandHandler.QueueCommand(TCmdEnterGame.Construct(), player);
+            }
             Logger.Log($"Game:{GameIndex} has started");
         }
     }
