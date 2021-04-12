@@ -23,9 +23,7 @@ namespace CrestfallenTLWBackend.Controller
         public ServerHandler()
         {
             Players = new List<Player>();
-            Players.Add(new TempPlayer(this,5));
             MatchmakingQueue = new List<Player>();
-            MatchmakingQueue.Add(Players[0]);
             ActiveGames = new List<GameHandler>();
             CommandHandler = new CommandHandler();
             _connectionManager = new ConnectionManager("88.86.36.163", 8000, this);
@@ -44,8 +42,10 @@ namespace CrestfallenTLWBackend.Controller
             _isActive = true;
             while (_isActive)
             {
-                if(MatchmakingQueue.Count > 1)
+                if(MatchmakingQueue.Count > 0)
                 {
+                    Players.Add(new TempPlayer(this, Players.Count));
+                    MatchmakingQueue.Add(Players[0]);
                     ActiveGames.Add(new GameHandler(MatchmakingQueue[0], MatchmakingQueue[1], ActiveGames.Count + 1));
                     MatchmakingQueue.RemoveAt(0);
                     MatchmakingQueue.RemoveAt(0);
