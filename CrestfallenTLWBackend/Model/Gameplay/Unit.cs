@@ -14,17 +14,19 @@ namespace CrestfallenTLWBackend.Model.Gameplay
     public class Unit : INavigator
     {
         public Vector2 Position;
-        private Vector2 MovementVector;
         public float MovementSpeed { get; set; }
         public float CurrentHealth{ get; set; }
         public float OriginalHealth{ get; set; }
 
         public Grid Grid { get; set; }
         public List<Tile> Waypoints { get; set; }
+        
         private int _currentWaypointDestination;
+        private Vector2 MovementVector;
 
         public Unit(Grid grid)
         {
+
             Grid = grid;
             Waypoints = new List<Tile>();
             _currentWaypointDestination = 0;
@@ -106,6 +108,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
             }
             return recordedResult;
         }
+
         private bool ReconstructPath(Tile start, Tile[] recordedResult)
         {
             Waypoints.Clear();
@@ -119,6 +122,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                 return Waypoints[0] == start;
             else return false;
         }
+
         public void PrintPath()
         {
             for (int x = 0; x < Grid.XLength; x++)
@@ -133,7 +137,8 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                         Console.Write(". ");
                     else if (Grid.Tiles[x, y].IsBlocked)
                         Console.Write("B ");
-                    else Console.Write("* ");
+                    else
+                        Console.Write("* ");
                 }
                 Console.WriteLine();
             }

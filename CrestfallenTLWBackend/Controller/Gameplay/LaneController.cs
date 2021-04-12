@@ -11,6 +11,7 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
     {
         public List<Unit> Units { get; set; }
         public List<ITower> Towers { get; set; }
+        public List<BaseTower> PlaceholderTowers { get; set; }
         public Grid Grid { get; set; }
 
         private Player _player;
@@ -24,11 +25,15 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
 
         public void SpawnUnit(Unit unit)
         {
-            //some cool logic
             Units.Add(unit);
         }
 
-        public void MoveUnits()
+        public void PlaceTower(int index)
+        {
+            Towers.Add(PlaceholderTowers[index].Clone());
+        }
+
+        public void MoveUnits() // Whacky race condition solution
         {
             var task = Parallel.ForEach(Units, x => x.Move());
             while (!task.IsCompleted)

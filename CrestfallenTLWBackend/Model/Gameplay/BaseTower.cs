@@ -62,5 +62,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
             }
             return false;
         }
+
+        public ITower Clone() => MemberwiseClone() as ITower;
     }
 }
