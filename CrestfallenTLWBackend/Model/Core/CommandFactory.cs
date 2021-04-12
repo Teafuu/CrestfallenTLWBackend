@@ -2,6 +2,7 @@
 using CrestfallenTLWBackend.Model.Core.Commands;
 using CrestfallenTLWBackend.Model.Gameplay;
 using CrestfallenCore.Communication;
+using CrestfallenTLWBackend.Model.Core.Commands.Gameplay;
 
 namespace CrestfallenTLWBackend.Model.Core
 {
@@ -14,6 +15,7 @@ namespace CrestfallenTLWBackend.Model.Core
             RequestChangeReadyStatus.Tag => new RequestChangeReadyStatus(cmd[1], player),
             RequestChangeLobbyReadyStatus.Tag => new RequestChangeLobbyReadyStatus(cmd[1], player),
             RequestBroadcastMessageToChatroom.Tag => new RequestBroadcastMessageToChatroom(cmd[1], cmd[3], player),
+            RequestCreateGrid.Tag => new RequestCreateGrid(player),
 
             CmdSetNickname.Tag => new CmdSetNickname(cmd[1], player),
             CmdEnterLobby.Tag => new CmdEnterLobby(cmd[1], cmd[2], player),
@@ -21,6 +23,7 @@ namespace CrestfallenTLWBackend.Model.Core
             CmdOnConnected.Tag => new CmdOnConnected(cmd[1], cmd[2], player),
             CmdChangeLobbyReadyStatus.Tag => new CmdChangeLobbyReadyStatus(cmd[1], cmd[2], player),
             CmdEnterGame.Tag => new CmdEnterGame(player),
+            CmdCreateGrid.Tag => new CmdCreateGrid(cmd[1], cmd[2], player),
             CmdBroadcastMessageToChatroom.Tag => new CmdBroadcastMessageToChatroom(cmd[1], cmd[3], player),
             _ => null
         };

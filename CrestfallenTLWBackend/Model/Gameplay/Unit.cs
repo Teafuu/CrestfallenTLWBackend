@@ -125,9 +125,9 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
         public void PrintPath()
         {
-            for (int x = 0; x < Grid.XLength; x++)
+            for (int x = 0; x < Grid.Rows; x++)
             {
-                for (int y = 0; y < Grid.YLength; y++)
+                for (int y = 0; y < Grid.Columns; y++)
                 {
                     if (Grid.Tiles[x, y] == Grid.Goal)
                         Console.Write("# "); 

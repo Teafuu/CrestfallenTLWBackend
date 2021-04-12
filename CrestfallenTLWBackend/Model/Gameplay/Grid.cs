@@ -9,19 +9,19 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         public Tile[,] Tiles { get; set; }
         public List<Tile> TilesAsList { get; set; }
         public Tile Goal;
-        public int XLength { get; set; }
-        public int YLength { get; set; }
+        public int Rows { get; set; }
+        public int Columns { get; set; }
         public Grid()
         {
-            XLength = 16;
-            YLength = 8;
+            Rows = 48;
+            Columns = 16;
 
             TilesAsList = new List<Tile>();
 
-            Tiles = new Tile[XLength, YLength];
+            Tiles = new Tile[Rows, Columns];
             int index = 0;
-            for (int x = 0; x < XLength; x++) { 
-                for (int y = 0; y < YLength; y++) { 
+            for (int x = 0; x < Rows; x++) { 
+                for (int y = 0; y < Columns; y++) { 
                     Tiles[x,y] = new Tile(x, y, index);
                     TilesAsList.Add(Tiles[x, y]);
                     index++;
@@ -35,8 +35,8 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
         private void GroupTiles()
         {
-            for (int x = 0; x < XLength; x++)
-                for (int y = 0; y < YLength; y++)
+            for (int x = 0; x < Rows; x++)
+                for (int y = 0; y < Columns; y++)
                 {
                     AddNeighbouringTile(Tiles[x, y], Tiles[x, y].TileBlock, x - 1, y);
                     AddNeighbouringTile(Tiles[x, y], Tiles[x, y].TileBlock, x - 1, y - 1);
@@ -52,17 +52,17 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
         private void AddNeighbouringTile(Tile originalTile, ICollection<Tile> collection, int xOffset, int yOffset)
         {
-            if (xOffset < 0 || xOffset >= XLength ||
-                yOffset < 0 || yOffset >= YLength)
+            if (xOffset < 0 || xOffset >= Rows ||
+                yOffset < 0 || yOffset >= Columns)
                 return;
             collection.Add(Tiles[xOffset, yOffset]);
         }
 
         public void PrintGrid()
         {
-            for (int x = 0; x < XLength; x++)
+            for (int x = 0; x < Rows; x++)
             {
-                for (int y = 0; y < YLength; y++) {
+                for (int y = 0; y < Columns; y++) {
                     if (Tiles[x, y] == Goal)
                         Console.Write("# ");
                     else if (Tiles[x, y].IsBlocked)
