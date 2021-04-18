@@ -7,6 +7,6 @@ namespace CrestfallenCore.Communication.Commands
     public abstract class TCmdEnterGame : Command
     {
         public const string Tag = "CmdEnterGame";
-        public static string Construct() => Tag;
+        public static string Construct(string isPlayerOne) => $"{Tag}:{isPlayerOne}";
     }
 }

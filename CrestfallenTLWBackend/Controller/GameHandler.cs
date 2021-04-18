@@ -42,6 +42,7 @@ namespace CrestfallenTLWBackend.Controller
         private void Initialize()
         {
             bool shouldStart = false;
+
             CommandHandler.QueueCommand(CmdEnterLobby.Construct(Players[1].Nickname, LobbyChat.ID.ToString()), Players[0]);
             CommandHandler.QueueCommand(CmdEnterLobby.Construct(Players[0].Nickname, LobbyChat.ID.ToString()), Players[1]);
             CommandHandler.QueueCommand(CmdOnConnected.Construct(Players[0].ID.ToString(), "false"), Players[1]);
@@ -52,14 +53,13 @@ namespace CrestfallenTLWBackend.Controller
                     shouldStart = true;
 
             StartGame();
-
         }
         private void StartGame()
         {
             Grid = new Grid();
             foreach (var player in Players)
             {
-                CommandHandler.QueueCommand(TCmdEnterGame.Construct(), player);
+                CommandHandler.QueueCommand(TCmdEnterGame.Construct((player == Players[0]).ToString()), player);
             }
             Logger.Log($"Game:{GameIndex} has started");
         }

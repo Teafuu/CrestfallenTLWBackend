@@ -17,7 +17,6 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         public float MovementSpeed { get; set; }
         public float CurrentHealth{ get; set; }
         public float OriginalHealth{ get; set; }
-
         public Grid Grid { get; set; }
         public List<Tile> Waypoints { get; set; }
         
@@ -26,7 +25,6 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
         public Unit(Grid grid)
         {
-
             Grid = grid;
             Waypoints = new List<Tile>();
             _currentWaypointDestination = 0;
@@ -106,6 +104,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                                 return recordedResult;
                         }
             }
+
             return recordedResult;
         }
 

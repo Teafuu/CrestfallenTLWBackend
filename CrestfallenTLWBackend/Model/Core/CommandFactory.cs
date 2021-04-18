@@ -22,7 +22,7 @@ namespace CrestfallenTLWBackend.Model.Core
             CmdChangeReadyStatus.Tag => new CmdChangeReadyStatus(cmd[1], player),
             CmdOnConnected.Tag => new CmdOnConnected(cmd[1], cmd[2], player),
             CmdChangeLobbyReadyStatus.Tag => new CmdChangeLobbyReadyStatus(cmd[1], cmd[2], player),
-            CmdEnterGame.Tag => new CmdEnterGame(player),
+            CmdEnterGame.Tag => new CmdEnterGame(cmd[1], player),
             CmdCreateGrid.Tag => new CmdCreateGrid(cmd[1], cmd[2], player),
             CmdBroadcastMessageToChatroom.Tag => new CmdBroadcastMessageToChatroom(cmd[1], cmd[3], player),
             _ => null
