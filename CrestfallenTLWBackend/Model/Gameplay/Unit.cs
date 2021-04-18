@@ -96,7 +96,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                 var node = q.Dequeue();
                 foreach (var next in node.Neighbours)
                     if (!visited[next.Index])
-                        if (!next.IsBlocked) { 
+                        if (!next.IsOccupied) { 
                             q.Enqueue(next);
                             visited[next.Index] = true;
                             recordedResult[next.Index] = node;
@@ -134,7 +134,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                         Console.Write("P ");
                     else if (Waypoints.Contains(Grid.Tiles[x, y]))
                         Console.Write(". ");
-                    else if (Grid.Tiles[x, y].IsBlocked)
+                    else if (Grid.Tiles[x, y].IsOccupied)
                         Console.Write("B ");
                     else
                         Console.Write("* ");

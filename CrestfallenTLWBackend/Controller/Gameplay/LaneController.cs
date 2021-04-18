@@ -18,6 +18,7 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
         public LaneController(Player player)
         {
             _player = player;
+            TowerSeeder.Seed(this);
             Units = new List<Unit>();
             Towers = new List<ITower>();
             Grid = new Grid();
@@ -25,12 +26,23 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
 
         public void SpawnUnit(Unit unit)
         {
-            Units.Add(unit);
+
         }
 
-        public void PlaceTower(int index)
+        public void PlaceTower(int row, int col, int index)
         {
-            Towers.Add(PlaceholderTowers[index].Clone());
+            if(Grid.Tiles[row, col].Placeable)
+            {
+                ITower tower = PlaceholderTowers[index].Clone();
+                tower.Tile = Grid.Tiles[row, col];
+
+                foreach (var tile in Grid.Tiles[row, col].Node)
+                    tile.IsOccupied = true;
+
+                Towers.Add(tower);
+
+                //då måste vi skapa ett command, som sæger åt unity att spawna tornet
+            }
         }
 
         public void MoveUnits() // Whacky race condition solution
