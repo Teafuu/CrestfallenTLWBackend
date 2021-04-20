@@ -7,6 +7,6 @@ namespace CrestfallenCore.Communication.Commands
     public abstract class TCmdEnterLobby : Command
     {
         public const string Tag = "CmdEnterLobby";
-        public static string Construct(string opponentNickname, string chatroomID) => $"{Tag}:{opponentNickname}:{chatroomID}";
+        public static string Construct(string chatroomID) => $"{Tag}:{chatroomID}";
     }
 }

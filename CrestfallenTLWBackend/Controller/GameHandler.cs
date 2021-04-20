@@ -1,6 +1,7 @@
 ﻿using CrestfallenCore.Communication.Commands;
 using CrestfallenTLWBackend.Model.Core;
 using CrestfallenTLWBackend.Model.Core.Commands;
+using CrestfallenTLWBackend.Model.Core.Commands.Lobby;
 using CrestfallenTLWBackend.Model.Gameplay;
 using CrestfallenTLWBackend.View;
 using System;
@@ -43,10 +44,15 @@ namespace CrestfallenTLWBackend.Controller
         {
             bool shouldStart = false;
 
-            CommandHandler.QueueCommand(CmdEnterLobby.Construct(Players[1].Nickname, LobbyChat.ID.ToString()), Players[0]);
-            CommandHandler.QueueCommand(CmdEnterLobby.Construct(Players[0].Nickname, LobbyChat.ID.ToString()), Players[1]);
-            CommandHandler.QueueCommand(CmdOnConnected.Construct(Players[0].ID.ToString(), "false"), Players[1]);
-            CommandHandler.QueueCommand(CmdOnConnected.Construct(Players[1].ID.ToString(), "false"), Players[0]);
+            CommandHandler.QueueCommand(CmdEnterLobby.Construct(LobbyChat.ID.ToString()), Players[0]);
+            CommandHandler.QueueCommand(CmdEnterLobby.Construct(LobbyChat.ID.ToString()), Players[1]);
+
+            //adding playerrs to lobby, temporary solution
+            CommandHandler.QueueCommand(CmdAddLobbyPlayer.Construct(Players[0].ID.ToString(), Players[0].Nickname, "true"), Players[0]);
+            CommandHandler.QueueCommand(CmdAddLobbyPlayer.Construct(Players[1].ID.ToString(), Players[1].Nickname, "false"), Players[0]);
+
+            CommandHandler.QueueCommand(CmdAddLobbyPlayer.Construct(Players[0].ID.ToString(), Players[0].Nickname, "false"), Players[1]);
+            CommandHandler.QueueCommand(CmdAddLobbyPlayer.Construct(Players[1].ID.ToString(), Players[1].Nickname, "true"), Players[1]);
 
             while (!shouldStart) // when both players have sent LobbyReadyStatusRequests
                 if (!Players.Where(x => !x.IsReady).Any())
