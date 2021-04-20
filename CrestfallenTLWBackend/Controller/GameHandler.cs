@@ -64,7 +64,7 @@ namespace CrestfallenTLWBackend.Controller
         {
             Grid = new Grid();
             foreach (var player in Players)
-                CommandHandler.QueueCommand(TCmdEnterGame.Construct((player == Players[0]).ToString()), player);
+                CommandHandler.QueueCommand(TCmdEnterGame.Construct(), player);
             
             Logger.Log($"Game:{GameIndex} has started");
         }
