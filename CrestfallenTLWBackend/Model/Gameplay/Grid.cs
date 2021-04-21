@@ -11,6 +11,8 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         public Tile Goal;
         public int Rows { get; set; }
         public int Columns { get; set; }
+        public Tile Start { get; set; }
+
         public Grid()
         {
             Rows = 48;
@@ -28,7 +30,8 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                 }
             }
             //bad testing purposes
-            Goal = TilesAsList[125];
+            Start = TilesAsList[0];
+            Goal = TilesAsList[TilesAsList.Count -1];
             //end of bad
             GroupTiles();
         }

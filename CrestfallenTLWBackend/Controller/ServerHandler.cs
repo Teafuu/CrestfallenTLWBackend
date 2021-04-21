@@ -42,7 +42,7 @@ namespace CrestfallenTLWBackend.Controller
             _isActive = true;
             while (_isActive)
             {
-                if(MatchmakingQueue.Count > 0)
+                if(MatchmakingQueue.Count > 1)
                 {
                     Players.Add(new TempPlayer(this, Players.Count));
                     MatchmakingQueue.Add(Players[Players.Count - 1]);

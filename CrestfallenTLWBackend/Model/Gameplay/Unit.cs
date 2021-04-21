@@ -19,9 +19,13 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         public float OriginalHealth{ get; set; }
         public Grid Grid { get; set; }
         public List<Tile> Waypoints { get; set; }
+        public int Id { get; set; }
+        public int Key { get; set; }
         
         private int _currentWaypointDestination;
         private Vector2 MovementVector;
+
+        private bool FinishedNavigating;
 
         public Unit(Grid grid)
         {
@@ -30,12 +34,16 @@ namespace CrestfallenTLWBackend.Model.Gameplay
             _currentWaypointDestination = 0;
         }
 
-        public void Move()
+        public string Move()
         {
-            if(Vector2.Distance(Position, Waypoints[_currentWaypointDestination].Position) <= 0)
+            if (FinishedNavigating)
+                return "";
+            if(Vector2.Distance(Position, Waypoints[_currentWaypointDestination].Position) <= 0.3)
             {
-                if (Waypoints.Count - 1 == _currentWaypointDestination)
+                if (Waypoints.Count - 1 == _currentWaypointDestination) {
+                    FinishedNavigating = true;
                     Logger.Log($"{this} finished navigating");
+                }
                 else
                 {
                     Position = Waypoints[_currentWaypointDestination].Position;
@@ -44,6 +52,8 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                 }
             }
             Position += MovementVector;
+            return $"!{Key},{Position.X},{Position.Y}";
+
         }
 
         internal void TakeDamage(float damage) => CurrentHealth -= damage;
@@ -117,6 +127,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
             Waypoints.Reverse();
             Position = Waypoints[0].Position;
+            Logger.Log($"Calculated path from: {start.Position.X},{start.Position.Y} -> {Waypoints.Last().Position.X},{Waypoints.Last().Position.Y}");
             if (Waypoints.Count > 0)
                 return Waypoints[0] == start;
             else return false;
@@ -142,5 +153,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                 Console.WriteLine();
             }
         }
+
+        public Unit Clone() => MemberwiseClone() as Unit;
     }
 }

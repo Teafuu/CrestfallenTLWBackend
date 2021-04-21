@@ -1,4 +1,5 @@
 ﻿using CrestfallenCore.Communication.Commands;
+using CrestfallenTLWBackend.Controller.Gameplay;
 using CrestfallenTLWBackend.Model.Core;
 using CrestfallenTLWBackend.Model.Core.Commands;
 using CrestfallenTLWBackend.Model.Core.Commands.Lobby;
@@ -19,6 +20,8 @@ namespace CrestfallenTLWBackend.Controller
         public int GameIndex { get; private set; }
         public Chatroom LobbyChat { get; set; }
         public Grid Grid { get; set; }
+
+        public GameSimulator Simulator { get; set; }
 
         private Thread _gameThread;
         public GameHandler(Player player1, Player player2, int gameIndex)
@@ -65,7 +68,7 @@ namespace CrestfallenTLWBackend.Controller
             Grid = new Grid();
             foreach (var player in Players)
                 CommandHandler.QueueCommand(TCmdEnterGame.Construct(), player);
-            
+            Simulator = new GameSimulator(this, 25);
             Logger.Log($"Game:{GameIndex} has started");
         }
     }
