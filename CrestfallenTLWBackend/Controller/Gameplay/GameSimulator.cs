@@ -15,10 +15,12 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
         private bool _isActive;
         private int _tickDuration;
         public GameHandler GameHandler { get; set; }
+        private DateTime timeSinceLastTick;
         public GameSimulator(GameHandler handler, int tickrate)
         {
             _simulationThread = new Thread(() => Simulation()) { IsBackground = true };
             _tickDuration = 1000 / tickrate;
+            timeSinceLastTick = DateTime.Now;
             GameHandler = handler;
             Lanes.Add(new LaneController(GameHandler.Players[0], this));
             Lanes.Add(new LaneController(GameHandler.Players[1], this));
@@ -38,7 +40,9 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
             _isActive = true;
             while (_isActive)
             {
-                Thread.Sleep(_tickDuration);
+                double miliseconds = timeSinceLastTick.Subtract(DateTime.Now).TotalMilliseconds;
+                if(miliseconds - _tickDuration > 0)
+                    Thread.Sleep((int)miliseconds - _tickDuration);
                 foreach(var lane in Lanes)
                 {
                     if(lane.Units.Count > 0)
@@ -46,6 +50,7 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
                     if(lane.Towers.Count > 0)
                         lane.FireTowers();
                 }
+                timeSinceLastTick = DateTime.Now;
             }
         }
     }

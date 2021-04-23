@@ -10,14 +10,16 @@ namespace CrestfallenTLWBackend.Model.Core.Commands.Gameplay
 {
     public class CmdUpdateUnitPositions : TCmdUpdateUnitPositions
     {
+        private readonly string playerId;
         private readonly string units;
         private readonly Player player;
 
-        public CmdUpdateUnitPositions(string units, Player player)
+        public CmdUpdateUnitPositions(string playerId, string units, Player player)
         {
+            this.playerId = playerId;
             this.units = units;
             this.player = player;
         }
-        public override void Execute() => player.Output(Construct(units));
+        public override void Execute() => player.Output(Construct(playerId, units));
     }
 }

@@ -23,7 +23,7 @@ namespace CrestfallenTLWBackend.Model.Core
             CmdSetNickname.Tag => new CmdSetNickname(cmd[1], player),
             CmdEnterLobby.Tag => new CmdEnterLobby(cmd[1], player), // might and probably should be removed.
             CmdChangeReadyStatus.Tag => new CmdChangeReadyStatus(cmd[1], player),
-            CmdUpdateUnitPositions.Tag => new CmdUpdateUnitPositions(cmd[1], player),
+            CmdUpdateUnitPositions.Tag => new CmdUpdateUnitPositions(cmd[1],cmd[2], player),
             CmdChangeLobbyReadyStatus.Tag => new CmdChangeLobbyReadyStatus(cmd[1], cmd[2], player),
             CmdEnterGame.Tag => new CmdEnterGame(player),
             CmdCreateGrid.Tag => new CmdCreateGrid(cmd[1], cmd[2], player),

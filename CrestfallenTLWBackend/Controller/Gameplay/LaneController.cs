@@ -71,7 +71,7 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
                 continue;
 
             foreach(var player in Simulator.GameHandler.Players)
-                Simulator.GameHandler.CommandHandler.QueueCommand(CmdUpdateUnitPositions.Construct(cmdMessage), player);
+                Simulator.GameHandler.CommandHandler.QueueCommand(CmdUpdateUnitPositions.Construct(Player.ID.ToString(), cmdMessage), player);
             return;
         }
 
