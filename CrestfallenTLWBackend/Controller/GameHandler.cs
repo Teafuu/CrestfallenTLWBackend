@@ -1,6 +1,8 @@
 ﻿using CrestfallenCore.Communication.Commands;
+using CrestfallenTLWBackend.Controller.Gameplay;
 using CrestfallenTLWBackend.Model.Core;
 using CrestfallenTLWBackend.Model.Core.Commands;
+using CrestfallenTLWBackend.Model.Core.Commands.Lobby;
 using CrestfallenTLWBackend.Model.Gameplay;
 using CrestfallenTLWBackend.View;
 using System;
@@ -18,6 +20,8 @@ namespace CrestfallenTLWBackend.Controller
         public int GameIndex { get; private set; }
         public Chatroom LobbyChat { get; set; }
         public Grid Grid { get; set; }
+
+        public GameSimulator Simulator { get; set; }
 
         private Thread _gameThread;
         public GameHandler(Player player1, Player player2, int gameIndex)
@@ -43,10 +47,15 @@ namespace CrestfallenTLWBackend.Controller
         {
             bool shouldStart = false;
 
-            CommandHandler.QueueCommand(CmdEnterLobby.Construct(Players[1].Nickname, LobbyChat.ID.ToString()), Players[0]);
-            CommandHandler.QueueCommand(CmdEnterLobby.Construct(Players[0].Nickname, LobbyChat.ID.ToString()), Players[1]);
-            CommandHandler.QueueCommand(CmdOnConnected.Construct(Players[0].ID.ToString(), "false"), Players[1]);
-            CommandHandler.QueueCommand(CmdOnConnected.Construct(Players[1].ID.ToString(), "false"), Players[0]);
+            CommandHandler.QueueCommand(CmdEnterLobby.Construct(LobbyChat.ID.ToString()), Players[0]);
+            CommandHandler.QueueCommand(CmdEnterLobby.Construct(LobbyChat.ID.ToString()), Players[1]);
+
+            //adding playerrs to lobby, temporary solution
+            CommandHandler.QueueCommand(CmdAddLobbyPlayer.Construct(Players[0].ID.ToString(), Players[0].Nickname, "true"), Players[0]);
+            CommandHandler.QueueCommand(CmdAddLobbyPlayer.Construct(Players[1].ID.ToString(), Players[1].Nickname, "false"), Players[0]);
+
+            CommandHandler.QueueCommand(CmdAddLobbyPlayer.Construct(Players[0].ID.ToString(), Players[0].Nickname, "false"), Players[1]);
+            CommandHandler.QueueCommand(CmdAddLobbyPlayer.Construct(Players[1].ID.ToString(), Players[1].Nickname, "true"), Players[1]);
 
             while (!shouldStart) // when both players have sent LobbyReadyStatusRequests
                 if (!Players.Where(x => !x.IsReady).Any())
@@ -58,9 +67,8 @@ namespace CrestfallenTLWBackend.Controller
         {
             Grid = new Grid();
             foreach (var player in Players)
-            {
-                CommandHandler.QueueCommand(TCmdEnterGame.Construct((player == Players[0]).ToString()), player);
-            }
+                CommandHandler.QueueCommand(TCmdEnterGame.Construct(), player);
+            Simulator = new GameSimulator(this, 25);
             Logger.Log($"Game:{GameIndex} has started");
         }
     }

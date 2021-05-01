@@ -12,7 +12,7 @@ namespace CrestfallenTLWBackend.Model.Core.Commands
         private Player _player;
         private string _chatroomId;
         private string _message;
-        public CmdBroadcastMessageToChatroom(string chatroomId,string message, Player player)
+        public CmdBroadcastMessageToChatroom(string chatroomId, string message, Player player)
         {
             _player = player;
             _chatroomId = chatroomId;

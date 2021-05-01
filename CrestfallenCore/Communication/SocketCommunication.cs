@@ -24,15 +24,20 @@ namespace CrestfallenCore.Communication
         }
         public static void SendMessage(string message, Socket socket)
         {
-            string msg;
-            int count = message.Length;
+            try { 
+                string msg;
+                int count = message.Length;
 
-            if (count < 100)
-                msg = $"0{count}";
-            else msg = count.ToString();
-            byte[] header = Encoding.UTF8.GetBytes(msg);
-            socket.Send(header);
-            socket.Send(Encoding.UTF8.GetBytes(message));
+                if (count < 100)
+                    msg = $"0{count}";
+                else msg = count.ToString();
+                byte[] header = Encoding.UTF8.GetBytes(msg);
+                socket.Send(header);
+                socket.Send(Encoding.UTF8.GetBytes(message));
+            }catch
+            {
+                Console.WriteLine("Something bad happened");
+            }
         }
     }
 }

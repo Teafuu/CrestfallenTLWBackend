@@ -11,6 +11,8 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         public Tile Goal;
         public int Rows { get; set; }
         public int Columns { get; set; }
+        public Tile Start { get; set; }
+
         public Grid()
         {
             Rows = 48;
@@ -27,9 +29,10 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                     index++;
                 }
             }
-
-            TilesAsList[1].IsBlocked = true;
-            Goal = TilesAsList[125];
+            //bad testing purposes
+            Start = TilesAsList[0];
+            Goal = TilesAsList[TilesAsList.Count -1];
+            //end of bad
             GroupTiles();
         }
 
@@ -38,9 +41,9 @@ namespace CrestfallenTLWBackend.Model.Gameplay
             for (int x = 0; x < Rows; x++)
                 for (int y = 0; y < Columns; y++)
                 {
-                    AddNeighbouringTile(Tiles[x, y], Tiles[x, y].TileBlock, x - 1, y);
-                    AddNeighbouringTile(Tiles[x, y], Tiles[x, y].TileBlock, x - 1, y - 1);
-                    AddNeighbouringTile(Tiles[x, y], Tiles[x, y].TileBlock, x, y - 1);
+                    AddNeighbouringTile(Tiles[x, y], Tiles[x, y].Node, x - 1, y);
+                    AddNeighbouringTile(Tiles[x, y], Tiles[x, y].Node, x - 1, y - 1);
+                    AddNeighbouringTile(Tiles[x, y], Tiles[x, y].Node, x, y - 1);
 
                     AddNeighbouringTile(Tiles[x, y], Tiles[x, y].Neighbours, x - 1, y);
                     AddNeighbouringTile(Tiles[x, y], Tiles[x, y].Neighbours, x, y + 1);
@@ -53,8 +56,8 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         private void AddNeighbouringTile(Tile originalTile, ICollection<Tile> collection, int xOffset, int yOffset)
         {
             if (xOffset < 0 || xOffset >= Rows ||
-                yOffset < 0 || yOffset >= Columns)
-                return;
+                    yOffset < 0 || yOffset >= Columns)
+                    return;
             collection.Add(Tiles[xOffset, yOffset]);
         }
 
@@ -65,7 +68,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                 for (int y = 0; y < Columns; y++) {
                     if (Tiles[x, y] == Goal)
                         Console.Write("# ");
-                    else if (Tiles[x, y].IsBlocked)
+                    else if (Tiles[x, y].IsOccupied)
                         Console.Write("B ");
                     else Console.Write("* ");
                 }

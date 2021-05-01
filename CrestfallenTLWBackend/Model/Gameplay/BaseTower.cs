@@ -46,7 +46,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         }
 
         // probably bad?
-        private Unit FindTarget() => LaneController.Units
+        private Unit FindTarget() => LaneController.Units.Values
             .Where(x => Vector2.Distance(Tile.Position, x.Position) <= Radius)
             .AsParallel()
             .FirstOrDefault();
