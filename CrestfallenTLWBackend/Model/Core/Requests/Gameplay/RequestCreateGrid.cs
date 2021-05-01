@@ -20,7 +20,7 @@ namespace CrestfallenTLWBackend.Model.Core.Requests
         public override void Execute()
         {
             _player.QueueCommand(CmdCreateGrid.Construct(_player.GameHandler.Grid.Rows.ToString(), _player.GameHandler.Grid.Columns.ToString()));
-
+            
         }
     }
 }

@@ -9,19 +9,19 @@ using CrestfallenTLWBackend.Model.Gameplay;
 
 namespace CrestfallenTLWBackend.Model.Core.Commands.Gameplay
 {
-    class CmdCreateGrid : TCmdCreateGrid
+    class CmdPlaceTower : TCmdPlaceTower
     {
-        private string _rows;
-        private string _columns;
+        private string _row;
+        private string _col;
         private Player _player;
 
-        public CmdCreateGrid(string rows, string columns, Player player)
+        public CmdPlaceTower(string row, string column, Player player)
         {
-            _rows = rows;
-            _columns = columns;
+            _col = column;
+            _row = row;
             _player = player;
         }
 
-        public override void Execute() => _player.Output(Construct(_rows, _columns));
+        public override void Execute() => _player.Output(Construct(_col, _row));
     }
 }
