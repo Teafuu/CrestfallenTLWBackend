@@ -7,6 +7,6 @@ namespace CrestfallenCore.Communication.Commands
     public abstract class TCmdPlaceTower : Command
     {
         public const string Tag = "CmdPlaceTower";
-        public static string Construct(string col, string row) => $"{Tag}:{col}:{row}";
+        public static string Construct(string row, string col, string playerId) => $"{Tag}:{col}:{row}:{playerId}";
     }
 }

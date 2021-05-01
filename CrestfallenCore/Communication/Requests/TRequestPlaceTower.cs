@@ -8,6 +8,6 @@ namespace CrestfallenCore.Communication.Requests
     {
         public const string Tag = "RequestPlaceTower";
 
-        public static string Construct(int col, int row) => $"{Tag}:{row}:{col}";
+        public static string Construct(string row, string col, string playerId) => $"{Tag}:{row}:{col}:{playerId}";
     }
 }

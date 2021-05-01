@@ -26,7 +26,7 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
             Lanes.Add(new LaneController(GameHandler.Players[1], this));
             Start();
         }
-        
+
         public void Start() => _simulationThread.Start();
         public void Stop() => _isActive = false;
 
@@ -35,22 +35,24 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
             Lanes.Where(x => x.Player != player).FirstOrDefault().SpawnUnit(unitId);
         }
 
+        public bool PlaceTower(int row, int column, int towerId, Player player)
+        {
+            return Lanes.Where(x => x.Player == player).FirstOrDefault().PlaceTower(row, column, towerId);
+        }
+
         private void Simulation()
         {
             _isActive = true;
             while (_isActive)
             {
-                double miliseconds = timeSinceLastTick.Subtract(DateTime.Now).TotalMilliseconds;
-                if(miliseconds - _tickDuration > 0)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
-                foreach(var lane in Lanes)
+                Thread.Sleep(_tickDuration);
+                foreach (var lane in Lanes)
                 {
-                    if(lane.Units.Count > 0)
+                    if (lane.Units.Count > 0)
                         lane.MoveUnits();
-                    if(lane.Towers.Count > 0)
+                    if (lane.Towers.Count > 0)
                         lane.FireTowers();
                 }
-                timeSinceLastTick = DateTime.Now;
             }
         }
     }
