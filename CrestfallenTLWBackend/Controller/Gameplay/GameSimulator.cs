@@ -40,9 +40,7 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
             _isActive = true;
             while (_isActive)
             {
-                double miliseconds = timeSinceLastTick.Subtract(DateTime.Now).TotalMilliseconds;
-                if(miliseconds - _tickDuration > 0)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
+                Thread.Sleep(_tickDuration);
                 foreach(var lane in Lanes)
                 {
                     if(lane.Units.Count > 0)
@@ -50,7 +48,6 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
                     if(lane.Towers.Count > 0)
                         lane.FireTowers();
                 }
-                timeSinceLastTick = DateTime.Now;
             }
         }
     }
