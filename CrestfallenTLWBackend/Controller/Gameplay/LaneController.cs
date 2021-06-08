@@ -49,7 +49,7 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
             _keyCount++;
         }
 
-        public void PlaceTower(int row, int col, int index)
+        public bool PlaceTower(int row, int col, int index)
         {
             if(Grid.Tiles[row, col].Placeable)
             {
@@ -60,7 +60,10 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
                     tile.IsOccupied = true;
 
                 Towers.Add(tower);
+
+                return true;
             }
+            return false;
         }
 
         public void MoveUnits() // Whacky race condition solution

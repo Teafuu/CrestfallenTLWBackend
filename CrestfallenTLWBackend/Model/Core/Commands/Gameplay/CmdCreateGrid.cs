@@ -20,9 +20,6 @@ namespace CrestfallenTLWBackend.Model.Core.Commands.Gameplay
             _rows = rows;
             _columns = columns;
             _player = player;
-
-
-            Console.WriteLine("ogabooga!");
         }
 
         public override void Execute() => _player.Output(Construct(_rows, _columns));

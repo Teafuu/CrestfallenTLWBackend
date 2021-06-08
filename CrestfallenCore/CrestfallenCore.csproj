@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>D:\Source\Unity\Crestfallen Revived\Assets\Core</OutputPath>
+    <OutputPath>D:\Unity\Projects\Crestfallen Revived\Assets\Core\</OutputPath>
   </PropertyGroup>
 
 </Project>

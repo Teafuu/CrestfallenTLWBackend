@@ -32,7 +32,7 @@ namespace CrestfallenTLWBackend.Controller
                 {
                     try { 
                         Command cmd = CommandQueue.Dequeue();
-                        //Logger.Log($"Executing {cmd}");
+                        Logger.Log($"Executing {cmd}");
                         cmd?.Execute();
                     }
                     catch(Exception e)
