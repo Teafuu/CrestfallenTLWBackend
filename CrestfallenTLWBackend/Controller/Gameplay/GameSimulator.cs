@@ -47,28 +47,6 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
             {
                 Thread.Sleep(_tickDuration);
                 foreach(var lane in Lanes)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
-                foreach(var lane in Lanes)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
-                foreach(var lane in Lanes)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
-                foreach(var lane in Lanes)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
-                foreach(var lane in Lanes)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
-                foreach(var lane in Lanes)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
-                foreach(var lane in Lanes)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
-                foreach(var lane in Lanes)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
-                foreach(var lane in Lanes)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
-                foreach(var lane in Lanes)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
-                foreach(var lane in Lanes)
-                    Thread.Sleep((int)miliseconds - _tickDuration);
-                foreach(var lane in Lanes)
                 {
                     if (lane.Units.Count > 0)
                         lane.MoveUnits();

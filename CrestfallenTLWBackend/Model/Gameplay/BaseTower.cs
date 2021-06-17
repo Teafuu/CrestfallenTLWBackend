@@ -31,11 +31,11 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
         public void Fire()
         {
-            if(_lastFired.Subtract(DateTime.Now).TotalSeconds >= AttackRatio)
+            if(_lastFired.Subtract(DateTime.Now).TotalSeconds >= AttackRatio) // might not work?
                 TargetEnemy();
         }
 
-        private void TargetEnemy()
+        private void TargetEnemy() // might also be bad.
         {
             if (!DealDamageToTarget())
             {
@@ -46,14 +46,14 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         }
 
         // probably bad?
-        private Unit FindTarget() => LaneController.Units.Values
+        private Unit FindTarget() => LaneController.Units.Values // Always picks the unit that's furthest towards the goal.
             .Where(x => Vector2.Distance(Tile.Position, x.Position) <= Radius)
             .AsParallel()
+            .OrderByDescending(x => x.CurrentWayPointDestination)
             .FirstOrDefault();
 
         private bool DealDamageToTarget()
         {
-
             if (Target != null && Vector2.Distance(Tile.Position, Target.Position) <= Radius)
             {
                 Target.TakeDamage(Damage);
