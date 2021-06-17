@@ -14,6 +14,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         public float Radius { get; set ; }
         public float AttackRatio { get; set ; }
         public float Damage { get; set; }
+        public int TowerKey { get; set; }
         private DateTime _lastFired;
         public Unit Target { get; set; }
         public Tile Tile { get; set; }

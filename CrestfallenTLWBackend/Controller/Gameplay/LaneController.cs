@@ -13,23 +13,25 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
     public class LaneController
     {
         public Dictionary<int, Unit> Units { get; set; }
-        public List<ITower> Towers { get; set; }
+        public Dictionary<int, ITower> Towers { get; set; }
         public List<BaseTower> PlaceholderTowers { get; set; } = new List<BaseTower>();
         public List<Unit> PlaceholderUnits { get; set; } = new List<Unit>();
         public Grid Grid { get; set; }
         public GameSimulator Simulator { get; set; }
-        private int _keyCount;
+        private int _unitKeyCount;
+        private int _towerKeyCount;
         public Player Player{ get; set; }
         public LaneController(Player player, GameSimulator simulator)
         {
             Player = player;
             Simulator = simulator;
             Units = new Dictionary<int, Unit>();
-            Towers = new List<ITower>();
+            Towers = new Dictionary<int, ITower>();
             Grid = new Grid();
             TowerSeeder.Seed(this);
             UnitSeeder.Seed(this);
-            _keyCount = 0;
+            _unitKeyCount = 0;
+            _towerKeyCount = 0;
         }
 
         public void SpawnUnit(int unitId)
@@ -39,14 +41,14 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
             if (unit is null)
                 return;
 
-            unit.Key = _keyCount;
+            unit.Key = _unitKeyCount;
             unit.Grid = Grid;
             unit.CalculatePath(Grid.Start);
-            Units.Add(_keyCount, unit);
+            Units.Add(_unitKeyCount, unit);
 
             foreach (var player in Simulator.GameHandler.Players)
-                player.GameHandler.CommandHandler.QueueCommand(CmdSpawnUnit.Construct(Player.ID.ToString(), unitId.ToString(), _keyCount.ToString(), Grid.Start.Position.X.ToString(), Grid.Start.Position.Y.ToString()), player);
-            _keyCount++;
+                player.GameHandler.CommandHandler.QueueCommand(CmdSpawnUnit.Construct(Player.ID.ToString(), unitId.ToString(), _unitKeyCount.ToString(), Grid.Start.Position.X.ToString(), Grid.Start.Position.Y.ToString()), player);
+            _unitKeyCount++;
         }
 
         public bool PlaceTower(int row, int col, int index)
@@ -59,7 +61,9 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
                 foreach (var tile in Grid.Tiles[row, col].Node)
                     tile.IsOccupied = true;
 
-                Towers.Add(tower);
+                tower.TowerKey = _towerKeyCount;
+                Towers.Add(_towerKeyCount, tower);
+                _towerKeyCount++;
 
                 return true;
             }
@@ -80,7 +84,7 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
 
         public void FireTowers()
         {
-            var task = Parallel.ForEach(Towers, x => x.Fire());
+            var task = Parallel.ForEach(Towers.Values, x => x.Fire());
             while (!task.IsCompleted)
                 continue;
             return;
