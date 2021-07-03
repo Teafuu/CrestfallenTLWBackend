@@ -13,6 +13,7 @@ namespace CrestfallenTLWBackend.Model.Interfaces
         public float Damage { get; set; }
         public Tile Tile { get; set; }
         public abstract void Fire();
+        public int TowerKey { get; set; }
         public abstract ITower Clone();
     }
 }

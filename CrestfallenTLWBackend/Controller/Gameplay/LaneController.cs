@@ -13,23 +13,25 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
     public class LaneController
     {
         public Dictionary<int, Unit> Units { get; set; }
-        public List<ITower> Towers { get; set; }
+        public Dictionary<int, ITower> Towers { get; set; }
         public List<BaseTower> PlaceholderTowers { get; set; } = new List<BaseTower>();
         public List<Unit> PlaceholderUnits { get; set; } = new List<Unit>();
         public Grid Grid { get; set; }
         public GameSimulator Simulator { get; set; }
         private int _keyCount;
+        private int _towerKeyCount;
         public Player Player{ get; set; }
         public LaneController(Player player, GameSimulator simulator)
         {
             Player = player;
             Simulator = simulator;
             Units = new Dictionary<int, Unit>();
-            Towers = new List<ITower>();
+            Towers = new Dictionary<int, ITower>();
             Grid = new Grid();
             TowerSeeder.Seed(this);
             UnitSeeder.Seed(this);
             _keyCount = 0;
+            _towerKeyCount = 0;
         }
 
         public void SpawnUnit(int unitId)
@@ -51,6 +53,7 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
 
         public bool PlaceTower(int row, int col, int index)
         {
+
             if(Grid.Tiles[row, col].Placeable)
             {
                 ITower tower = PlaceholderTowers[index].Clone();
@@ -59,7 +62,9 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
                 foreach (var tile in Grid.Tiles[row, col].Node)
                     tile.IsOccupied = true;
 
-                Towers.Add(tower);
+                tower.TowerKey = _towerKeyCount;
+                Towers.Add(_towerKeyCount, tower);
+                _towerKeyCount++;
 
                 return true;
             }
@@ -80,7 +85,8 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
 
         public void FireTowers()
         {
-            var task = Parallel.ForEach(Towers, x => x.Fire());
+            var task = Parallel.ForEach(Towers.Values, x => x.Fire());
+
             while (!task.IsCompleted)
                 continue;
             return;

@@ -15,12 +15,16 @@ namespace CrestfallenTLWBackend.Model.Core.Requests.Gameplay
         private readonly int column;
         private Player _player;
         private string _playerId;
-        public RequestPlaceTower(string row, string column, Player player, string playerId)
+        private string _towerId;
+        private string _towerKey;
+        public RequestPlaceTower(string row, string column, Player player, string playerId, string towerId, string towerKey)
         {
             this.row = Convert.ToInt32(row);
             this.column = Convert.ToInt32(column);
             _player = player;
             _playerId = playerId;
+            _towerId = towerId;
+            _towerKey = towerKey;
         }
 
         public override void Execute()
@@ -28,7 +32,7 @@ namespace CrestfallenTLWBackend.Model.Core.Requests.Gameplay
             if(_player.GameHandler.Simulator.PlaceTower(row, column, 0, _player))
             {
                 foreach(var player in _player.GameHandler.Players)
-                    player.QueueCommand(CmdPlaceTower.Construct(row.ToString(), column.ToString(), _playerId));
+                    player.QueueCommand(CmdPlaceTower.Construct(row.ToString(), column.ToString(), _playerId, _towerId, _towerKey));
             }
         }
     }

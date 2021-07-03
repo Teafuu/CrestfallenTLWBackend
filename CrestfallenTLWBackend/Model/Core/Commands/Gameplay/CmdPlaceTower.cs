@@ -15,15 +15,19 @@ namespace CrestfallenTLWBackend.Model.Core.Commands.Gameplay
         private string _col;
         private Player _player;
         private string _playerId;
+        private string _towerId;
+        private string _towerKey;
 
-        public CmdPlaceTower(string row, string column, Player player, string playerId)
+        public CmdPlaceTower(string row, string column, Player player, string playerId, string towerId, string towerKey)
         {
             _col = column;
             _row = row;
             _player = player;
             _playerId = playerId;
+            _towerId = towerId;
+            _towerKey = towerKey;
         }
 
-        public override void Execute() => _player.Output(Construct(_row, _col, _playerId));
+        public override void Execute() => _player.Output(Construct(_row, _col, _playerId, _towerId, _towerKey));
     }
 }

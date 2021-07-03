@@ -1,4 +1,5 @@
 ﻿using CrestfallenTLWBackend.Controller.Gameplay;
+using CrestfallenTLWBackend.Model.Core.Commands.Gameplay;
 using CrestfallenTLWBackend.Model.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         private DateTime _lastFired;
         public Unit Target { get; set; }
         public Tile Tile { get; set; }
+        public int TowerKey { get; set; }
         public LaneController LaneController { get; set; }
 
         public BaseTower(string name, float radius, float attackRatio, float damage, LaneController controller, Tile tile)
@@ -25,7 +27,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
             Radius = radius;
             AttackRatio = attackRatio;
             Damage = damage;
-            LaneController = LaneController;
+            LaneController = controller;
             Tile = tile;
         }
 
@@ -56,6 +58,13 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
             if (Target != null && Vector2.Distance(Tile.Position, Target.Position) <= Radius)
             {
+                LaneController.Simulator.GameHandler.CommandHandler.QueueCommand(
+                    CmdSpawnProjectile.Construct(
+                        LaneController.Player.ID.ToString(),
+                        TowerKey.ToString(),
+                        Target.ToString()),
+                    LaneController.Player);
+
                 Target.TakeDamage(Damage);
                 _lastFired = DateTime.Now;
                 return true;
