@@ -46,7 +46,7 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
             while (_isActive)
             {
                 Thread.Sleep(_tickDuration);
-                foreach (var lane in Lanes)
+                foreach(var lane in Lanes)
                 {
                     if (lane.Units.Count > 0)
                         lane.MoveUnits();

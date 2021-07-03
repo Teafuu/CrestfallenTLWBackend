@@ -15,6 +15,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         public float Radius { get; set ; }
         public float AttackRatio { get; set ; }
         public float Damage { get; set; }
+        public int TowerKey { get; set; }
         private DateTime _lastFired;
         public Unit Target { get; set; }
         public Tile Tile { get; set; }
@@ -33,11 +34,11 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
         public void Fire()
         {
-            if(_lastFired.Subtract(DateTime.Now).TotalSeconds >= AttackRatio)
+            if(_lastFired.Subtract(DateTime.Now).TotalSeconds >= AttackRatio) // might not work?
                 TargetEnemy();
         }
 
-        private void TargetEnemy()
+        private void TargetEnemy() // might also be bad.
         {
             if (!DealDamageToTarget())
             {
@@ -48,14 +49,14 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         }
 
         // probably bad?
-        private Unit FindTarget() => LaneController.Units.Values
+        private Unit FindTarget() => LaneController.Units.Values // Always picks the unit that's furthest towards the goal.
             .Where(x => Vector2.Distance(Tile.Position, x.Position) <= Radius)
             .AsParallel()
+            .OrderByDescending(x => x.CurrentWayPointDestination)
             .FirstOrDefault();
 
         private bool DealDamageToTarget()
         {
-
             if (Target != null && Vector2.Distance(Tile.Position, Target.Position) <= Radius)
             {
                 LaneController.Simulator.GameHandler.CommandHandler.QueueCommand(

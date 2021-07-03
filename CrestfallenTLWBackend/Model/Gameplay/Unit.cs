@@ -22,7 +22,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         public int Id { get; set; }
         public int Key { get; set; }
         
-        private int _currentWaypointDestination;
+        public int CurrentWayPointDestination { get; set; }
         private Vector2 MovementVector;
 
         private bool FinishedNavigating;
@@ -31,23 +31,23 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         {
             Grid = grid;
             Waypoints = new List<Tile>();
-            _currentWaypointDestination = 0;
+            CurrentWayPointDestination = 0;
         }
 
         public string Move()
         {
             if (FinishedNavigating)
                 return "";
-            if(Vector2.Distance(Position, Waypoints[_currentWaypointDestination].Position) <= 0.3)
+            if(Vector2.Distance(Position, Waypoints[CurrentWayPointDestination].Position) <= 0.3)
             {
-                if (Waypoints.Count - 1 == _currentWaypointDestination) {
+                if (Waypoints.Count - 1 == CurrentWayPointDestination) {
                     FinishedNavigating = true;
                     Logger.Log($"{this} finished navigating");
                 }
                 else
                 {
-                    Position = Waypoints[_currentWaypointDestination].Position;
-                    _currentWaypointDestination++;
+                    Position = Waypoints[CurrentWayPointDestination].Position;
+                    CurrentWayPointDestination++;
                     GetMovementDirection();
                 }
             }
@@ -60,9 +60,9 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
         private void GetMovementDirection()
         {
-            if ((Position.X - Waypoints[_currentWaypointDestination].Position.X) == 0)
+            if ((Position.X - Waypoints[CurrentWayPointDestination].Position.X) == 0)
             {
-                if ((Position.Y - Waypoints[_currentWaypointDestination].Position.Y) > 0)
+                if ((Position.Y - Waypoints[CurrentWayPointDestination].Position.Y) > 0)
                 {
                     MovementVector.Y = -MovementSpeed;
                     MovementVector.X = 0;
@@ -75,7 +75,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
             }
             else
             {
-                if ((Position.X - Waypoints[_currentWaypointDestination].Position.X) > 0)
+                if ((Position.X - Waypoints[CurrentWayPointDestination].Position.X) > 0)
                 {
                     MovementVector.Y = 0;
                     MovementVector.X = -MovementSpeed;
