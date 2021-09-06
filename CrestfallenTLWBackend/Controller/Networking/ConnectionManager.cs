@@ -42,7 +42,6 @@ namespace CrestfallenTLWBackend.Controller.Networking
                 TcpClient client = _listener.AcceptTcpClient();
                 Logger.Log($"Client connected with IP {client.Client.RemoteEndPoint}");
                 Player player =  new HumanPlayer(client, _server, _server.Players.Count);
-                //_server.CommandHandler.QueueCommand(TCmdOnConnected.Construct(player.ID.ToString(), "true"), player); might not be needed?
                 _server.Players.Add(player);
             }
         }

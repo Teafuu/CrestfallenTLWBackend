@@ -14,14 +14,20 @@ namespace CrestfallenTLWBackend.Model.Core.Commands.Gameplay
         private readonly Player player;
         private readonly string towerKey;
         private readonly string unitKey;
+        private readonly string playerID;
 
-
-        public CmdSpawnProjectile(Player player, string towerKey, string unitKey)
+        public CmdSpawnProjectile(string playerID, string towerKey, string unitKey, Player player)
         {
             this.player = player;
+            this.playerID = playerID;
+
             this.towerKey = towerKey;
             this.unitKey = unitKey;
         }
-        public override void Execute() => player.Output(Construct(player.ID.ToString(), towerKey, unitKey));
+        public override void Execute()
+        {
+            foreach(var player  in player.GameHandler.Players)
+                player.Output(Construct(playerID, towerKey, unitKey));
+        }
     }
 }

@@ -32,15 +32,18 @@ namespace CrestfallenTLWBackend.Model.Gameplay
                 try
                 {
                     string message = SocketCommunication.GetMessage(_client.Client);
+                    Logger.Log(message);
                     QueueCommand(message);
                 }
                 catch(Exception e) // handle exception
                 {
                     Logger.Log(e.Message);
                     _client.Close();
+
                     ServerHandler?.Players.Remove(this);
                     ServerHandler?.MatchmakingQueue.Remove(this);
                     GameHandler?.Players.Remove(this);
+
                     _receiveThread.Join();
                 }
             }

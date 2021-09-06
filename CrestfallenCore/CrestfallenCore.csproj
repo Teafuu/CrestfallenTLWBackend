@@ -5,7 +5,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>D:\Unity\Projects\Crestfallen Revived\Assets\Core\</OutputPath>
+    <OutputPath>D:\Source\Unity\Crestfallen Revived\Assets\Core</OutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Communication\Database\" />
+  </ItemGroup>
 
 </Project>

@@ -20,7 +20,7 @@ namespace CrestfallenTLWBackend.Model.Core
             RequestBroadcastMessageToChatroom.Tag => new RequestBroadcastMessageToChatroom(cmd[1], cmd[3], player),
             RequestCreateGrid.Tag => new RequestCreateGrid(player),
             RequestSpawnUnit.Tag => new RequestSpawnUnit(cmd[1], player),
-            RequestPlaceTower.Tag => new RequestPlaceTower(cmd[1], cmd[2], player, cmd[3], cmd[4], cmd[5]),
+            RequestPlaceTower.Tag => new RequestPlaceTower(cmd[1], cmd[2], cmd[3], cmd[4], player),
 
             CmdSetNickname.Tag => new CmdSetNickname(cmd[1], player),
             CmdEnterLobby.Tag => new CmdEnterLobby(cmd[1], player), // might and probably should be removed.
@@ -32,7 +32,7 @@ namespace CrestfallenTLWBackend.Model.Core
             CmdBroadcastMessageToChatroom.Tag => new CmdBroadcastMessageToChatroom(cmd[1], cmd[3], player),
             CmdAddLobbyPlayer.Tag => new CmdAddLobbyPlayer(cmd[1], cmd[2], cmd[3], player),
             CmdSpawnUnit.Tag => new CmdSpawnUnit(cmd[1], cmd[2],cmd[3], cmd[4], cmd[5], player),
-            CmdSpawnProjectile.Tag => new CmdSpawnProjectile(player, cmd[2], cmd[3]),
+            CmdSpawnProjectile.Tag => new CmdSpawnProjectile(cmd[1], cmd[2], cmd[3], player),
             CmdPlaceTower.Tag => new CmdPlaceTower(cmd[1], cmd[2], player, cmd[3], cmd[4], cmd[5]),
             _ => null
         };

@@ -18,9 +18,11 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
         public List<Unit> PlaceholderUnits { get; set; } = new List<Unit>();
         public Grid Grid { get; set; }
         public GameSimulator Simulator { get; set; }
+        public Player Player{ get; set; }
+
         private int _keyCount;
         private int _towerKeyCount;
-        public Player Player{ get; set; }
+
         public LaneController(Player player, GameSimulator simulator)
         {
             Player = player;
@@ -44,6 +46,7 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
             unit.Key = _keyCount;
             unit.Grid = Grid;
             unit.CalculatePath(Grid.Start);
+            unit.OnDeathEvent += OnUnitDeath;
             Units.Add(_keyCount, unit);
 
             foreach (var player in Simulator.GameHandler.Players)
@@ -51,9 +54,9 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
             _keyCount++;
         }
 
-        public bool PlaceTower(int row, int col, int index)
+        public int PlaceTower(int row, int col, int index)
         {
-
+            
             if(Grid.Tiles[row, col].Placeable)
             {
                 ITower tower = PlaceholderTowers[index].Clone();
@@ -66,15 +69,15 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
                 Towers.Add(_towerKeyCount, tower);
                 _towerKeyCount++;
 
-                return true;
+                return tower.TowerKey;
             }
-            return false;
+            return -1;
         }
 
         public void MoveUnits() // Whacky race condition solution
         {
             string cmdMessage = "";
-            var task = Parallel.ForEach(Units.Values, x => cmdMessage += x.Move()); //might not work..
+            var task = Parallel.ForEach(Units.Values.ToList(), x => cmdMessage += x.Move()); //might not work..
             while (!task.IsCompleted)
                 continue;
 
@@ -83,13 +86,19 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
             return;
         }
 
-        public void FireTowers()
+        public void FireTowers() // bad solution, tower should have internal timer and then have a fire event.
         {
-            var task = Parallel.ForEach(Towers.Values, x => x.Fire());
+            var task = Parallel.ForEach(Towers.Values.ToList(), x => x.Fire()); // should be sent as a copy, in case list gets changed during execution
 
             while (!task.IsCompleted)
                 continue;
             return;
         }
+
+        /// <summary>
+        /// Hooks into eventhandler of Unit, invoked when units health falls below 0.
+        /// </summary>
+        /// <param name="unitKey"></param>
+        private void OnUnitDeath(int unitKey) => Units.Remove(unitKey);
     }
 }

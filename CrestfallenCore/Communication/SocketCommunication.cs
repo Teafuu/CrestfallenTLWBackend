@@ -7,7 +7,7 @@ namespace CrestfallenCore.Communication
 {
     public static class SocketCommunication // redo with larger buffer 
     {
-        private static int BufferSize = 3;
+        private static int BufferSize = 20;
 
         public static string GetMessage(Socket socket)
         {
@@ -16,25 +16,27 @@ namespace CrestfallenCore.Communication
 
             if (receivedBytes > 0)
             {
-                byte[] socketMessage = new byte[Convert.ToInt32(Encoding.UTF8.GetString(header))];
+                string headerSizeAsString = Encoding.UTF8.GetString(header);
+                int socketMessageSize = Convert.ToInt32(headerSizeAsString);
+                byte[] socketMessage = new byte[socketMessageSize];
+
                 socket.Receive(socketMessage);
-                return Encoding.UTF8.GetString(socketMessage);
+
+                string finalMessageAsString = Encoding.UTF8.GetString(socketMessage); 
+                return finalMessageAsString;
             }
             throw new Exception("Connection Closed");
         }
+
+
         public static void SendMessage(string message, Socket socket)
         {
-            try { 
-                string msg;
-                int count = message.Length;
-
-                if (count < 100)
-                    msg = $"0{count}";
-                else msg = count.ToString();
-                byte[] header = Encoding.UTF8.GetBytes(msg);
-                socket.Send(header);
-                socket.Send(Encoding.UTF8.GetBytes(message));
-            }catch
+            try {
+                string count = Encoding.UTF8.GetByteCount(message).ToString();
+                string msg = count.PadLeft(BufferSize, '0');
+                socket.Send(Encoding.UTF8.GetBytes(msg + message));
+            }
+            catch
             {
                 Console.WriteLine("Something bad happened");
             }

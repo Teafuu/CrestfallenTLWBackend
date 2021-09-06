@@ -35,10 +35,8 @@ namespace CrestfallenTLWBackend.Controller.Gameplay
             Lanes.Where(x => x.Player != player).FirstOrDefault().SpawnUnit(unitId);
         }
 
-        public bool PlaceTower(int row, int column, int towerId, Player player)
-        {
-            return Lanes.Where(x => x.Player == player).FirstOrDefault().PlaceTower(row, column, towerId);
-        }
+        public int PlaceTower(int row, int column, int towerId, Player player) => Lanes.Where(x => x.Player == player).FirstOrDefault().PlaceTower(row, column, towerId);
+
 
         private void Simulation()
         {

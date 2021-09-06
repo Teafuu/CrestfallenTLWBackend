@@ -27,6 +27,10 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
         private bool FinishedNavigating;
 
+        public delegate void DeathEventHandler(int unitKey);
+        public event DeathEventHandler OnDeathEvent;
+
+
         public Unit(Grid grid)
         {
             Grid = grid;
@@ -42,7 +46,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
             {
                 if (Waypoints.Count - 1 == CurrentWayPointDestination) {
                     FinishedNavigating = true;
-                    Logger.Log($"{this} finished navigating");
+                    //Logger.Log($"{this} finished navigating");
                 }
                 else
                 {
@@ -56,7 +60,13 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
         }
 
-        internal void TakeDamage(float damage) => CurrentHealth -= damage;
+        internal void TakeDamage(float damage)
+        {
+            CurrentHealth -= damage;
+            if(CurrentHealth <= 0) // invoke hooked events for destroying this unit.
+                OnDeathEvent.Invoke(Key);
+
+        }
 
         private void GetMovementDirection()
         {

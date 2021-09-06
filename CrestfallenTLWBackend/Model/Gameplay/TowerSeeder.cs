@@ -13,7 +13,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
         {
             lane.PlaceholderTowers.Add(new BaseTower(
                 name: "Basic Tower", 
-                radius: 2, 
+                radius: 8, 
                 attackRatio: 2, 
                 damage: 20, 
                 controller: lane, 
@@ -21,7 +21,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
             lane.PlaceholderTowers.Add(new BaseTower(
                 name: "Fire Tower",
-                radius: 2,
+                radius: 8,
                 attackRatio: 2,
                 damage: 20,
                 controller: lane,
@@ -29,7 +29,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
             lane.PlaceholderTowers.Add(new BaseTower(
                 name: "Terra flower",
-                radius: 2,
+                radius: 8,
                 attackRatio: 2,
                 damage: 20,
                 controller: lane,
@@ -37,7 +37,7 @@ namespace CrestfallenTLWBackend.Model.Gameplay
 
             lane.PlaceholderTowers.Add(new BaseTower(
                 name: "Eramghurd tower",
-                radius: 2,
+                radius: 8,
                 attackRatio: 2,
                 damage: 20,
                 controller: lane,

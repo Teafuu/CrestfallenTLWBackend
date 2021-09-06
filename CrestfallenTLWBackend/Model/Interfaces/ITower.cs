@@ -15,6 +15,5 @@ namespace CrestfallenTLWBackend.Model.Interfaces
         public abstract void Fire();
         public int TowerKey { get; set; }
         public abstract ITower Clone();
-        public int TowerKey { get; set; }
     }
 }
