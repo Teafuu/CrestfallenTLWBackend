@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -9,7 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Communication\Database\" />
+    <Compile Remove="Communication\Database\**" />
+    <EmbeddedResource Remove="Communication\Database\**" />
+    <None Remove="Communication\Database\**" />
   </ItemGroup>
 
 </Project>

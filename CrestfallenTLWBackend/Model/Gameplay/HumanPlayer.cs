@@ -1,59 +1,58 @@
 ﻿using CrestfallenCore.Communication;
 using CrestfallenTLWBackend.Controller;
-using CrestfallenTLWBackend.Model.Core;
-using CrestfallenTLWBackend.Model.Gameplay;
 using CrestfallenTLWBackend.View;
 using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 
-namespace CrestfallenTLWBackend.Model.Gameplay
+namespace CrestfallenTLWBackend.Model.Gameplay;
+
+public class HumanPlayer : Player
 {
-    public class HumanPlayer : Player
+    private readonly TcpClient _client;
+
+    private readonly Thread _receiveThread;
+    public HumanPlayer(TcpClient client, ServerHandler server, int playerID) : base(server, playerID)
     {
-        private TcpClient _client;
+        _client = client;
+        _receiveThread = new Thread(Receive) { IsBackground = true };
+        _receiveThread.Start();
+    }
 
-        private Thread _receiveThread;
-        public HumanPlayer(TcpClient client, ServerHandler server, int playerID) : base(server, playerID)
+    public override void Output(string msg) => SocketCommunication.SendMessage(msg, _client.Client);
+
+    public override void Receive()
+    {
+        while (_client.Connected)
         {
-            _client = client;
-            _receiveThread = new Thread(() => Receive()) { IsBackground = true };
-            _receiveThread.Start();
-        }
-
-        public override void Output(string msg) => SocketCommunication.SendMessage(msg, _client.Client);
-
-        public override void Receive()
-        {
-            while (_client.Connected)
+            try
             {
-                try
-                {
-                    string message = SocketCommunication.GetMessage(_client.Client);
-                    Logger.Log(message);
-                    QueueCommand(message);
-                }
-                catch(Exception e) // handle exception
-                {
-                    Logger.Log(e.Message);
-                    _client.Close();
+                var message = SocketCommunication.GetMessage(_client.Client);
 
-                    ServerHandler?.Players.Remove(this);
-                    ServerHandler?.MatchmakingQueue.Remove(this);
-                    GameHandler?.Players.Remove(this);
+                if(message == null)
+                    continue;
 
-                    _receiveThread.Join();
-                }
+                Logger.Log(message);
+                QueueCommand(message);
+            }
+            catch(Exception e) // handle exception
+            {
+                Logger.Log(e.Message);
+                _client.Close();
+
+                ServerHandler?.Players.Remove(this);
+                ServerHandler?.MatchmakingQueue.Remove(this);
+                GameHandler?.Players.Remove(this);
+
+                _receiveThread.Join();
             }
         }
+    }
 
-        public override void QueueCommand(string command)
-        {
-            if (GameHandler != null)
-                GameHandler.CommandHandler.QueueCommand(command, this);
-            else ServerHandler.CommandHandler.QueueCommand(command, this);
-        }
+    public override void QueueCommand(string command)
+    {
+        if (GameHandler != null)
+            GameHandler.CommandHandler.QueueCommand(command, this);
+        else ServerHandler.CommandHandler.QueueCommand(command, this);
     }
 }

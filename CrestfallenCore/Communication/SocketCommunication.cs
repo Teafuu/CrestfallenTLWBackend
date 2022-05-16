@@ -11,29 +11,28 @@ namespace CrestfallenCore.Communication
 
         public static string GetMessage(Socket socket)
         {
-            byte[] header = new byte[BufferSize];
-            int receivedBytes = socket.Receive(header);
+            var header = new byte[BufferSize];
+            var receivedBytes = socket.Receive(header);
 
-            if (receivedBytes > 0)
-            {
-                string headerSizeAsString = Encoding.UTF8.GetString(header);
-                int socketMessageSize = Convert.ToInt32(headerSizeAsString);
-                byte[] socketMessage = new byte[socketMessageSize];
+            if (receivedBytes <= 0) return null;
+            
+            var headerSizeAsString = Encoding.UTF8.GetString(header);
+            var socketMessageSize = Convert.ToInt32(headerSizeAsString);
+            var socketMessage = new byte[socketMessageSize];
 
-                socket.Receive(socketMessage);
+            socket.Receive(socketMessage);
 
-                string finalMessageAsString = Encoding.UTF8.GetString(socketMessage); 
-                return finalMessageAsString;
-            }
-            throw new Exception("Connection Closed");
+            var finalMessageAsString = Encoding.UTF8.GetString(socketMessage); 
+            return finalMessageAsString;
         }
 
 
         public static void SendMessage(string message, Socket socket)
         {
-            try {
-                string count = Encoding.UTF8.GetByteCount(message).ToString();
-                string msg = count.PadLeft(BufferSize, '0');
+            try 
+            {
+                var count = Encoding.UTF8.GetByteCount(message).ToString();
+                var msg = count.PadLeft(BufferSize, '0');
                 socket.Send(Encoding.UTF8.GetBytes(msg + message));
             }
             catch

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CrestfallenTLWBackend.View;
 
 namespace CrestfallenTLWBackend.Model.Core.Commands.Gameplay
 {
@@ -19,6 +20,7 @@ namespace CrestfallenTLWBackend.Model.Core.Commands.Gameplay
             this.playerId = playerId;
             this.units = units;
             this.player = player;
+            Logger.Log(Construct(playerId, units));
         }
         public override void Execute() => player.Output(Construct(playerId, units));
     }
